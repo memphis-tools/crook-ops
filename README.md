@@ -1,8 +1,11 @@
+![Screenshot](src/main/resources/static/img/0_3.png)
+[Image credits: midjourney](https://www.midjourney.com)
+
 # Crook Ops
 
 A small AWS deployment project serving the same application through three different environments.
 
-**Domain:** `crook-ops.dev` (registered with Namecheap)
+**Domain:** `crook-ops.dev` (registered with [Namecheap](https://www.namecheap.com/))
 
 > 🕐 **Available daily:** 08:00–23:00 **Europe/Paris**
 
@@ -46,3 +49,12 @@ All three services are exposed through the same Application Load Balancer (ALB),
 This project is inspired by the Udemy course **DevOps CI/CD Project: Jenkins, Ansible and Kubernetes** by AR Shankar (Valaxy Technologies), which demonstrates a complete CI/CD workflow using Git, Jenkins, Maven, Docker, Ansible and Kubernetes on AWS EKS.
 
 https://www.udemy.com/course/valaxy-devops/learn/lecture/29982498?start=0
+
+## Links
+
+https://app.crook-ops.dev/crook-ops/
+
+https://app.crook-ops.dev/docker/crook-ops/
+
+https://app.crook-ops.dev/k8s/crook-ops/
+
