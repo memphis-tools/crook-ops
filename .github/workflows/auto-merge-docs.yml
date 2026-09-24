@@ -11,7 +11,8 @@ permissions:
 jobs:
   auto-merge:
     if: |
-      startsWith(github.head_ref, 'docs/')
+      startsWith(github.head_ref, 'docs/') ||
+      startsWith(github.head_ref, 'vibe/')
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge
