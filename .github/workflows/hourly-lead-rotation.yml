@@ -2,7 +2,8 @@ name: Hourly lead text rotation
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "13 * * * *"
+    - cron: "44 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -21,18 +22,30 @@ jobs:
       REPO: ${{ github.repository }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Gate to 08:00-23:00 Europe/Paris
+      - name: Gate to 08:00-23:00 Europe/Paris, once per hour
         run: |
           set -eu
           HOUR="$(TZ=Europe/Paris date +%H)"
-          echo "Current time in Europe/Paris: $(TZ=Europe/Paris date '+%H:%M')"
-          if [ "$HOUR" -lt 8 ]; then
-            echo "Outside the 08:00-23:00 Europe/Paris window; skipping."
-            echo "rotate=false" >> "$GITHUB_ENV"
-          else
-            echo "Within the 08:00-23:00 Europe/Paris window; rotating."
-            echo "rotate=true" >> "$GITHUB_ENV"
+          echo "Current time in Europe/Paris: $(TZ=Europe/Paris date '+%H:%M')."
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
+            if [ "$HOUR" -lt 8 ]; then
+              echo "Outside the 08:00-23:00 Europe/Paris window; skipping."
+              echo "rotate=false" >> "$GITHUB_ENV"
+              exit 0
+            fi
+            LAST="$(gh pr list --repo "$REPO" --head "$BRANCH" --state merged --limit 1 --json mergedAt --jq '.[0].mergedAt // empty')"
+            if [ -n "$LAST" ]; then
+              LAST_HOUR="$(TZ=Europe/Paris date -d "$LAST" '+%Y-%m-%dT%H')"
+              NOW_HOUR="$(TZ=Europe/Paris date '+%Y-%m-%dT%H')"
+              if [ "$LAST_HOUR" = "$NOW_HOUR" ]; then
+                echo "Lead text already rotated this hour (last merge: $LAST); skipping."
+                echo "rotate=false" >> "$GITHUB_ENV"
+                exit 0
+              fi
+            fi
           fi
+          echo "Within the 08:00-23:00 Europe/Paris window; rotating."
+          echo "rotate=true" >> "$GITHUB_ENV"
 
       - name: Checkout main
         if: env.rotate == 'true'
@@ -77,12 +90,12 @@ jobs:
         if: env.rotate == 'true'
         run: |
           set -eu
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if git diff --quiet; then
             echo "Lead text already matches the pool; nothing to push."
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           STAMP="$(TZ=Europe/Paris date '+%Y-%m-%d %H:%M')"
           git add src/main/resources/templates/index.html
           git commit -m "Rotate hero lead text ($STAMP Europe/Paris)"
@@ -96,9 +109,27 @@ jobs:
           ## Summary
           - Hourly rotation of the hero lead text in `src/main/resources/templates/index.html`, drawn at random from the pool in `scripts/lead_pool.py` and themed on new web technologies.
           - Runs hourly from 08:00 to 23:00 Europe/Paris.
-          - The branch is removed once this pull request is merged, then the next run opens a fresh one with a new rotation.
+          - This pull request is merged and its branch removed automatically by the rotation workflow.
           EOF
           gh pr create --repo "$REPO" --base main --head "$BRANCH" \
             --title "vibe/enhance-description" \
             --body-file /tmp/pr-body.md \
             || echo "Pull request already exists."
+
+      - name: Merge pull request and remove branch
+        if: env.rotate == 'true'
+        run: |
+          set -eu
+          STATE="$(gh pr view "$BRANCH" --repo "$REPO" --json state --jq .state 2>/dev/null || echo NONE)"
+          if [ "$STATE" != "OPEN" ]; then
+            echo "No open pull request to merge."
+            exit 0
+          fi
+          if gh pr merge "$BRANCH" --repo "$REPO" --squash; then
+            echo "Merged the rotation pull request."
+            git push origin --delete "$BRANCH" \
+              && echo "Removed merged branch $BRANCH." \
+              || echo "Branch already removed."
+          else
+            echo "Merge failed; pull request left open for the next run."
+          fi
