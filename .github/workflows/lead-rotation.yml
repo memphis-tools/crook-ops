@@ -110,22 +110,30 @@ jobs:
           - Runs hourly from 08:00 to 23:00 Europe/Paris.
           - This pull request is merged and its branch removed automatically by the rotation workflow.
           EOF
-          gh pr create --repo "$REPO" --base main --head "$BRANCH" \
-            --title "vibe/enhance-description" \
-            --body-file /tmp/pr-body.md \
-            || echo "Pull request already exists."
+          for attempt in 1 2 3 4 5; do
+            if gh pr create --repo "$REPO" --base main --head "$BRANCH" \
+              --title "vibe/enhance-description" \
+              --body-file /tmp/pr-body.md; then
+              echo "Pull request created on attempt $attempt."
+              exit 0
+            fi
+            echo "Pull request creation attempt $attempt failed; retrying..."
+            sleep 10
+          done
+          echo "ERROR: could not open the rotation pull request after retries."
+          exit 1
 
       - name: Merge pull request and remove branch
         if: env.rotate == 'true'
         run: |
           set -eu
-          STATE="$(gh pr view "$BRANCH" --repo "$REPO" --json state --jq .state 2>/dev/null || echo NONE)"
-          if [ "$STATE" != "OPEN" ]; then
+          NUMBER="$(gh pr list --repo "$REPO" --head "$BRANCH" --state open --limit 1 --json number --jq '.[0].number // empty')"
+          if [ -z "$NUMBER" ]; then
             echo "No open pull request to merge."
             exit 0
           fi
           for attempt in 1 2 3 4 5; do
-            if gh pr merge "$BRANCH" --repo "$REPO" --squash; then
+            if gh pr merge "$NUMBER" --repo "$REPO" --squash; then
               echo "Merged the rotation pull request."
               git push origin --delete "$BRANCH" \
                 && echo "Removed merged branch $BRANCH." \
