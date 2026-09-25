@@ -26,12 +26,12 @@ jobs:
           set -eu
           HOUR="$(TZ=Europe/Paris date +%H)"
           echo "Current time in Europe/Paris: $(TZ=Europe/Paris date '+%H:%M')."
-          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
-            if [ "$HOUR" -lt 8 ]; then
-              echo "Outside the 08:00-23:00 Europe/Paris window; skipping."
-              echo "rotate=false" >> "$GITHUB_ENV"
-              exit 0
-            fi
+          if [ "$HOUR" -lt 8 ]; then
+            echo "Outside the 08:00-23:00 Europe/Paris window; skipping."
+            echo "rotate=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             LAST="$(gh pr list --repo "$REPO" --head "$BRANCH" --state merged --limit 1 --json mergedAt --jq '.[0].mergedAt // empty')"
             if [ -n "$LAST" ]; then
               LAST_HOUR="$(TZ=Europe/Paris date -d "$LAST" '+%Y-%m-%dT%H')"
