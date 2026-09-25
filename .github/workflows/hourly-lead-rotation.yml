@@ -1,0 +1,104 @@
+name: Hourly lead text rotation
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: hourly-lead-rotation
+  cancel-in-progress: false
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: vibe/enhance-description
+      REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Gate to 08:00-23:00 Europe/Paris
+        run: |
+          set -eu
+          HOUR="$(TZ=Europe/Paris date +%H)"
+          echo "Current time in Europe/Paris: $(TZ=Europe/Paris date '+%H:%M')"
+          if [ "$HOUR" -lt 8 ]; then
+            echo "Outside the 08:00-23:00 Europe/Paris window; skipping."
+            echo "rotate=false" >> "$GITHUB_ENV"
+          else
+            echo "Within the 08:00-23:00 Europe/Paris window; rotating."
+            echo "rotate=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout main
+        if: env.rotate == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Inspect existing pull request
+        if: env.rotate == 'true'
+        id: pr
+        run: |
+          set -eu
+          STATE="$(gh pr view "$BRANCH" --repo "$REPO" --json state --jq .state 2>/dev/null || echo NONE)"
+          echo "state=$STATE" >> "$GITHUB_OUTPUT"
+          echo "Existing pull request state: $STATE"
+
+      - name: Remove branch from a merged, closed, or stale pull request
+        if: env.rotate == 'true' && steps.pr.outputs.state != 'OPEN'
+        run: |
+          set -eu
+          git push origin --delete "$BRANCH" 2>/dev/null \
+            && echo "Deleted stale branch $BRANCH." \
+            || echo "No stale branch to remove."
+
+      - name: Sync rotation branch
+        if: env.rotate == 'true'
+        run: |
+          set -eu
+          git fetch origin
+          if [ "${{ steps.pr.outputs.state }}" = "OPEN" ]; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            git checkout -B "$BRANCH" origin/main
+            git push --force origin "$BRANCH"
+          fi
+
+      - name: Rotate lead text
+        if: env.rotate == 'true'
+        run: python3 scripts/rotate_lead.py
+
+      - name: Commit and push rotation
+        if: env.rotate == 'true'
+        run: |
+          set -eu
+          if git diff --quiet; then
+            echo "Lead text already matches the pool; nothing to push."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          STAMP="$(TZ=Europe/Paris date '+%Y-%m-%d %H:%M')"
+          git add src/main/resources/templates/index.html
+          git commit -m "Rotate hero lead text ($STAMP Europe/Paris)"
+          git push origin "$BRANCH"
+
+      - name: Open pull request
+        if: env.rotate == 'true' && steps.pr.outputs.state != 'OPEN'
+        run: |
+          set -eu
+          cat > /tmp/pr-body.md <<'EOF'
+          ## Summary
+          - Hourly rotation of the hero lead text in `src/main/resources/templates/index.html`, drawn at random from the pool in `scripts/lead_pool.py` and themed on new web technologies.
+          - Runs hourly from 08:00 to 23:00 Europe/Paris.
+          - The branch is removed once this pull request is merged, then the next run opens a fresh one with a new rotation.
+          EOF
+          gh pr create --repo "$REPO" --base main --head "$BRANCH" \
+            --title "vibe/enhance-description" \
+            --body-file /tmp/pr-body.md \
+            || echo "Pull request already exists."

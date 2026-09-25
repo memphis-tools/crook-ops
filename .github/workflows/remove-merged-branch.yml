@@ -1,0 +1,27 @@
+name: Remove merged rotation branch
+
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  remove:
+    if: >
+      github.event.pull_request.merged == true
+      && github.event.pull_request.head.ref == 'vibe/enhance-description'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete merged branch
+        run: |
+          set -eu
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          git init -q /tmp/wk
+          cd /tmp/wk
+          if git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" --delete "$BRANCH" 2>/dev/null; then
+            echo "Deleted merged branch $BRANCH."
+          else
+            echo "Branch $BRANCH already removed; nothing to do."
+          fi
