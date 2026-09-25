@@ -2,8 +2,7 @@ name: Hourly lead text rotation
 
 on:
   schedule:
-    - cron: "13 * * * *"
-    - cron: "44 * * * *"
+    - cron: "3,11,19,27,34,41,49,56 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -125,11 +124,16 @@ jobs:
             echo "No open pull request to merge."
             exit 0
           fi
-          if gh pr merge "$BRANCH" --repo "$REPO" --squash; then
-            echo "Merged the rotation pull request."
-            git push origin --delete "$BRANCH" \
-              && echo "Removed merged branch $BRANCH." \
-              || echo "Branch already removed."
-          else
-            echo "Merge failed; pull request left open for the next run."
-          fi
+          for attempt in 1 2 3 4 5; do
+            if gh pr merge "$BRANCH" --repo "$REPO" --squash; then
+              echo "Merged the rotation pull request."
+              git push origin --delete "$BRANCH" \
+                && echo "Removed merged branch $BRANCH." \
+                || echo "Branch already removed."
+              exit 0
+            fi
+            echo "Merge attempt $attempt failed; waiting before retry..."
+            sleep 15
+          done
+          echo "Merge failed after retries; pull request left open for the next run."
+          exit 0
