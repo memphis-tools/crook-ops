@@ -13,6 +13,22 @@ jobs:
       - name: Build
         run: ./mvnw -q package
 
+      - name: Start app manually and inspect
+        run: |
+          ls -lh target/
+          sh -c "nohup java -jar $(ls target/*.war | head -1) > app.log 2>&1 &"
+          sleep 45
+          echo "=== app.log (first 60 lines) ==="
+          head -60 app.log
+          echo "=== tail of app.log ==="
+          tail -30 app.log
+          echo "=== probes ==="
+          curl -s -o /dev/null -w "/ -> %{http_code}\n" http://localhost:8080/
+          curl -s -o /dev/null -w "/index.html -> %{http_code}\n" http://localhost:8080/index.html
+          curl -s -o /dev/null -w "/crook-ops -> %{http_code}\n" http://localhost:8080/crook-ops/
+      - name: Test page
+        run: npx playwright test
+
       - name: Install Playwright browser
         run: |
           npm ci
