@@ -1,0 +1,41 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Spring app
+        run: ./mvnw -q package
+
+      - name: Start app
+        run: |
+          nohup java -jar target/*.jar &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080/index.html && break
+            sleep 2
+          done
+
+      - name: Smoke test page
+        run: |
+          # Fails the job on any 4xx/5xx → deployment stopped
+          curl -f http://localhost:8080/index.html -o /dev/null
+
+      - name: Check JS errors (headless browser)
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test   # a test asserting page loads without console errors
+
+  deploy:
+    needs: verify          # runs only if verify passed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to AWS VM
+        run: ssh $SSH_USER@$SSH_HOST "cd /opt/app && git pull && sudo systemctl restart tomcat"
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
