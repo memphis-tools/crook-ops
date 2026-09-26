@@ -1,0 +1,35 @@
+name: uptime
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 min
+  workflow_dispatch:  # manual run button for testing
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check sites
+        run: |
+          mkdir -p .status
+          rm -f .status/*.json
+          check() {
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$2" || echo 000)
+            if [ "$code" = "200" ]; then msg="up"; color="brightgreen"; else msg="down ($code)"; color="red"; fi
+            printf '{"schemaVersion":1,"label":"%s","message":"%s","color":"%s"}' "$1" "$msg" "$color" > ".status/$1.json"
+          }
+          check standalone tomcat "https://app.crook-ops.dev/crook-ops/"
+          check tomcat container "https://app.crook-ops.dev/docker/crook-ops/"
+          check tomcat pods "https://app.crook-ops.dev/k8s/crook-ops/"
+
+      - name: Commit status
+        run: |
+          git config user.name "uptime-bot"
+          git config user.email "actions@github.com"
+          git add .status
+          git diff --cached --quiet || git commit -m "update uptime status [skip ci]"
+          git push
