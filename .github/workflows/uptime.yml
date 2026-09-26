@@ -23,9 +23,9 @@ jobs:
             if [ "$code" = "200" ]; then msg="up"; color="brightgreen"; else msg="down ($code)"; color="red"; fi
             printf '{"schemaVersion":1,"label":"%s","message":"%s","color":"%s"}' "$1" "$msg" "$color" > ".status/$1.json"
           }
-          check "site1" "https://REAL-URL-1"
-          check "site2" "https://REAL-URL-2"
-          check "site3" "https://REAL-URL-3"
+          check "site1" "https://app.crook-ops.dev/crook-ops/"
+          check "site2" "https://app.crook-ops.dev/docker/crook-ops/"
+          check "site3" "https://app.crook-ops.dev/k8s/crook-ops/"
 
       - name: Commit status
         run: |
