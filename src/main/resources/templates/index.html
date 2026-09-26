@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport content="width=device-width, initial-scale=1.0">
@@ -48,7 +48,7 @@ body {
             rgba(4, 7, 13, 0.70) 48%,
             rgba(4, 7, 13, 0.55) 100%
         ),
-        url("../img/0_3.png") center / cover no-repeat;
+        url("/img/0_3.png") center / cover no-repeat;
 }
 
 .hero::before {
@@ -107,7 +107,6 @@ body {
     z-index: 10;
 }
 
-/* Animated Eyebrow */
 .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -194,7 +193,6 @@ h1 span {
     line-height: 1.65;
 }
 
-/* Fixed-size Terminal with cycling text */
 .terminal {
     display: inline-block;
 
@@ -364,10 +362,6 @@ h1 span {
     color: inherit;
 }
 
-/* =========================================================
-   SUNO PLAYER
-   ========================================================= */
-
 .suno-player {
     position: absolute;
 
@@ -514,10 +508,6 @@ h1 span {
     font-size: 0.8rem;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
 @media (max-width: 850px) {
 
     .hero {
@@ -595,7 +585,6 @@ h1 span {
     }
 }
 
-/* Enhanced small screen handling */
 @media (max-width: 420px) {
     .content {
         grid-template-columns: 1fr !important;
@@ -661,7 +650,7 @@ h1 span {
 
             <a
                 class="cta"
-                href="https://github.com/memphis-tools/crook-ops"
+                th:href="@{https://github.com/memphis-tools/crook-ops}"
                 target="_blank"
                 rel="noopener"
             >
@@ -676,7 +665,7 @@ h1 span {
         >
 
             <img
-                src="/img/0_3.png"
+                th:src="@{/img/0_3.png}"
                 alt="CROOK-OPS ENGINEER candidate"
             >
 
@@ -701,10 +690,6 @@ h1 span {
         </aside>
 
     </div>
-
-    <!-- =====================================================
-         SUNO PLAYER
-         ===================================================== -->
 
     <div class="suno-player">
 
@@ -765,9 +750,10 @@ h1 span {
 
 </main>
 
-<script>
+<script th:inline="javascript">
+/*<![CDATA[*/
 
-// Background rotation
+// Background rotation (pure client-side, no server variables)
 const backgrounds = [
     "https://images.pexels.com/photos/17489156/pexels-photo-17489156.jpeg?auto=compress&cs=tinysrgb&w=1920",
     "https://images.pexels.com/photos/4816921/pexels-photo-4816921.jpeg?auto=compress&cs=tinysrgb&w=1920",
@@ -780,15 +766,9 @@ const hero = document.querySelector(".hero");
 
 const chosen = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
-hero.style.backgroundImage = `
-    linear-gradient(
-        110deg,
-        rgba(4, 7, 13, 0.94) 0%,
-        rgba(4, 7, 13, 0.70) 48%,
-        rgba(4, 7, 13, 0.55) 100%
-    ),
-    url("${chosen}")
-`;
+hero.style.backgroundImage =
+    "linear-gradient(110deg, rgba(4, 7, 13, 0.94) 0%, rgba(4, 7, 13, 0.70) 48%, rgba(4, 7, 13, 0.55) 100%), " +
+    "url('" + chosen + "')";
 
 // ===============================================
 // CYCLING TERMINAL TEXT ANIMATION
@@ -806,7 +786,7 @@ const commands = [
 let currentCommandIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
-let phase = 'typing'; // typing, pausing, deleting, wait-delete
+let phase = 'typing';
 
 function getCyclingDelay() {
     switch(phase) {
@@ -848,7 +828,6 @@ function cycleCommands() {
             terminalText.textContent = currentCommand.substring(0, charIndex);
             setTimeout(cycleCommands, getCyclingDelay());
         } else {
-            // Move to next command
             currentCommandIndex = (currentCommandIndex + 1) % commands.length;
             charIndex = 0;
             phase = 'typing';
@@ -857,13 +836,13 @@ function cycleCommands() {
     }
 }
 
-// Start animation when page loads
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         cycleCommands();
     }, 800);
 });
 
+/*]]>*/
 </script>
 
 </body>
