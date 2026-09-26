@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CROOK-OPS ENGINEER — crook-ops.dev</title>
 
 <style>
@@ -153,14 +153,10 @@ body {
 
 .eyebrow::before {
     content: "";
-
     width: 7px;
     height: 7px;
-
     border-radius: 50%;
-
     background: var(--accent);
-
     box-shadow: 0 0 14px var(--accent);
     animation: pulse-dot 2s ease-in-out infinite;
 }
@@ -172,7 +168,6 @@ body {
 
 h1 {
     margin: 0;
-
     font-size: clamp(3rem, 7vw, 6.8rem);
     line-height: 0.9;
     letter-spacing: -0.065em;
@@ -184,46 +179,34 @@ h1 span {
 
 .lead {
     max-width: 650px;
-
     margin: 28px 0 0;
-
     color: var(--muted);
-
     font-size: clamp(1.05rem, 2vw, 1.3rem);
     line-height: 1.65;
 }
 
 .terminal {
     display: inline-block;
-
     margin-top: 30px;
     padding: 13px 16px;
-
     border: 1px solid var(--border);
     border-radius: 10px;
-
     background: rgba(0, 0, 0, 0.45);
     color: #e7edf7;
-
     font-family:
         ui-monospace,
         SFMono-Regular,
         Menlo,
         Consolas,
         monospace;
-
     font-size: 0.9rem;
     line-height: 1.4;
-
     backdrop-filter: blur(8px);
-
     min-width: 340px;
     max-width: 420px;
     height: 48px;
-
     white-space: nowrap;
     overflow: hidden;
-
     position: relative;
 }
 
@@ -233,15 +216,6 @@ h1 span {
 
 .terminal-text-container {
     display: inline;
-}
-
-.terminal-text {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-.terminal-text.fading {
-    opacity: 0;
 }
 
 .terminal-cursor {
@@ -264,29 +238,22 @@ h1 span {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-
     margin-top: 28px;
     padding: 14px 20px;
-
     border-radius: 10px;
-
     background: var(--accent);
     color: #06110d;
-
     text-decoration: none;
     font-weight: 800;
-
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
-
     box-shadow:
         0 10px 30px rgba(125, 249, 193, 0.16);
 }
 
 .cta:hover {
     transform: translateY(-2px);
-
     box-shadow:
         0 14px 36px rgba(125, 249, 193, 0.25);
 }
@@ -294,33 +261,23 @@ h1 span {
 .profile {
     width: 400px;
     max-width: 100%;
-
     justify-self: end;
-
     padding: 14px;
-
     border: 1px solid var(--border);
     border-radius: 24px;
-
     background: var(--panel);
-
     box-shadow:
         0 25px 80px rgba(0, 0, 0, 0.45);
-
     backdrop-filter: blur(14px);
-
     position: relative;
     z-index: 5;
 }
 
 .profile img {
     display: block;
-
     width: 100%;
     aspect-ratio: 1 / 1;
-
     object-fit: cover;
-
     border-radius: 16px;
 }
 
@@ -335,26 +292,19 @@ h1 span {
 
 .profile-caption small {
     display: block;
-
     margin-top: 4px;
-
     color: var(--muted);
 }
 
 .credit {
     position: absolute;
-
     left: 20px;
     right: 20px;
     bottom: 16px;
-
     color: rgba(255, 255, 255, 0.58);
-
     font-size: 0.72rem;
     line-height: 1.4;
-
     text-align: center;
-
     z-index: 10;
 }
 
@@ -364,33 +314,23 @@ h1 span {
 
 .suno-player {
     position: absolute;
-
     right: 24px;
     bottom: 54px;
-
     display: flex;
     align-items: center;
     gap: 12px;
-
     min-width: 250px;
     max-width: 320px;
-
     padding: 10px 10px 10px 12px;
-
     border: 1px solid rgba(125, 249, 193, 0.24);
     border-radius: 14px;
-
     background: rgba(5, 9, 16, 0.68);
-
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-
     box-shadow:
         0 15px 45px rgba(0, 0, 0, 0.35),
         inset 0 0 25px rgba(125, 249, 193, 0.025);
-
     z-index: 100;
-
     transition:
         border-color 0.2s ease,
         transform 0.2s ease,
@@ -399,28 +339,20 @@ h1 span {
 
 .suno-player:hover {
     transform: translateY(-2px);
-
     border-color: rgba(125, 249, 193, 0.5);
-
     background: rgba(5, 14, 18, 0.78);
 }
 
 .suno-player-icon {
     display: grid;
     place-items: center;
-
     width: 34px;
     height: 34px;
-
     flex: 0 0 34px;
-
     border: 1px solid rgba(125, 249, 193, 0.3);
     border-radius: 50%;
-
     color: var(--accent);
-
     font-size: 1rem;
-
     box-shadow:
         0 0 18px rgba(125, 249, 193, 0.08);
 }
@@ -428,21 +360,18 @@ h1 span {
 .suno-player-info {
     display: flex;
     flex-direction: column;
-
     min-width: 0;
     flex: 1;
 }
 
 .suno-player-label {
     color: rgba(255, 255, 255, 0.45);
-
     font-family:
         ui-monospace,
         SFMono-Regular,
         Menlo,
         Consolas,
         monospace;
-
     font-size: 0.58rem;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -450,21 +379,16 @@ h1 span {
 
 .suno-player-title {
     margin-top: 3px;
-
     overflow: hidden;
-
     white-space: nowrap;
     text-overflow: ellipsis;
-
     color: var(--text);
-
     font-family:
         ui-monospace,
         SFMono-Regular,
         Menlo,
         Consolas,
         monospace;
-
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -473,21 +397,14 @@ h1 span {
 .suno-player-button {
     display: grid;
     place-items: center;
-
     width: 38px;
     height: 38px;
-
     flex: 0 0 38px;
-
     border: 1px solid rgba(125, 249, 193, 0.35);
     border-radius: 50%;
-
     background: rgba(125, 249, 193, 0.08);
-
     color: var(--accent);
-
     text-decoration: none;
-
     transition:
         background 0.2s ease,
         transform 0.2s ease,
@@ -496,9 +413,7 @@ h1 span {
 
 .suno-player-button:hover {
     background: rgba(125, 249, 193, 0.18);
-
     transform: scale(1.06);
-
     box-shadow:
         0 0 20px rgba(125, 249, 193, 0.15);
 }
@@ -509,33 +424,23 @@ h1 span {
 }
 
 @media (max-width: 850px) {
-
     .hero {
         display: block;
-
         overflow-y: auto;
         overflow-x: hidden;
     }
-
     .content {
         width: min(720px, calc(100% - 40px));
-
         min-height: 100%;
-
         grid-template-columns: 1fr;
-
         align-content: center;
-
         padding: 40px 0 90px;
     }
-
     .profile {
         justify-self: start;
-
         width: min(400px, 100%);
         margin-top: 30px;
     }
-
     .suno-player {
         z-index: 50;
     }
@@ -545,40 +450,31 @@ h1 span {
     .content {
         gap: 24px;
     }
-
     .profile {
         margin-top: 20px;
     }
 }
 
 @media (max-width: 520px) {
-
     .content {
         width: calc(100% - 28px);
-
         padding-bottom: 95px;
     }
-
     .profile {
         padding: 10px;
-
         border-radius: 18px;
     }
-
     .profile img {
         border-radius: 12px;
     }
-
     .credit {
         left: 14px;
         right: 14px;
         bottom: 12px;
     }
-
     .suno-player {
         right: 14px;
         bottom: 48px;
-
         min-width: 0;
         width: calc(100% - 28px);
         max-width: none;
@@ -590,28 +486,23 @@ h1 span {
         grid-template-columns: 1fr !important;
         padding: 30px 16px 80px;
     }
-
     .profile {
         width: 100% !important;
         margin-top: 20px;
     }
-
     h1 {
         font-size: clamp(2rem, 9vw, 5rem);
     }
-
     .suno-player {
         bottom: 75px;
         right: 12px;
         left: 12px;
         width: calc(100% - 24px);
     }
-
     .credit {
         bottom: 85px;
         font-size: 0.65rem;
     }
-
     .terminal {
         min-width: 280px;
         max-width: 100%;
@@ -644,13 +535,13 @@ h1 span {
             <div class="terminal" id="terminal">
                 <strong>&gt;</strong>
                 <span class="terminal-text-container">
-                    <span class="terminal-text" id="terminal-text"></span><span class="terminal-cursor" id="cursor"></span>
+                    <span id="terminal-text"></span><span class="terminal-cursor" id="cursor"></span>
                 </span>
             </div>
 
             <a
                 class="cta"
-                th:href="@{https://github.com/memphis-tools/crook-ops}"
+                href="https://github.com/memphis-tools/crook-ops"
                 target="_blank"
                 rel="noopener"
             >
@@ -665,7 +556,7 @@ h1 span {
         >
 
             <img
-                th:src="@{/img/0_3.png}"
+                src="/img/0_3.png"
                 alt="CROOK-OPS ENGINEER candidate"
             >
 
@@ -750,11 +641,8 @@ h1 span {
 
 </main>
 
-<script th:inline="javascript">
-/*<![CDATA[*/
-
-// Background rotation (pure client-side, no server variables)
-const backgrounds = [
+<script>
+var backgrounds = [
     "https://images.pexels.com/photos/17489156/pexels-photo-17489156.jpeg?auto=compress&cs=tinysrgb&w=1920",
     "https://images.pexels.com/photos/4816921/pexels-photo-4816921.jpeg?auto=compress&cs=tinysrgb&w=1920",
     "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=1920",
@@ -762,67 +650,52 @@ const backgrounds = [
     "https://images.pexels.com/photos/3861976/pexels-photo-3861976.jpeg?auto=compress&cs=tinysrgb&w=1920"
 ];
 
-const hero = document.querySelector(".hero");
+var hero = document.querySelector(".hero");
+var chosen = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
-const chosen = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+hero.style.backgroundImage = "linear-gradient(110deg, rgba(4, 7, 13, 0.94) 0%, rgba(4, 7, 13, 0.70) 48%, rgba(4, 7, 13, 0.55) 100%), url(\"" + chosen + "\")";
 
-hero.style.backgroundImage =
-    "linear-gradient(110deg, rgba(4, 7, 13, 0.94) 0%, rgba(4, 7, 13, 0.70) 48%, rgba(4, 7, 13, 0.55) 100%), " +
-    "url('" + chosen + "')";
+var terminalText = document.getElementById("terminal-text");
+var cursor = document.getElementById("cursor");
+var terminalDiv = document.getElementById("terminal");
 
-// ===============================================
-// CYCLING TERMINAL TEXT ANIMATION
-// ===============================================
-
-const terminalText = document.getElementById('terminal-text');
-const cursor = document.getElementById('cursor');
-const terminalDiv = document.getElementById('terminal');
-
-const commands = [
-    'init career --role="engineer"',
-    'running career --mode="crook"'
+var commands = [
+    "init career --role=\"engineer\"",
+    "running career --mode=\"crook\""
 ];
 
-let currentCommandIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let phase = 'typing';
+var currentCommandIndex = 0;
+var charIndex = 0;
+var phase = "typing";
 
 function getCyclingDelay() {
-    switch(phase) {
-        case 'typing':
-            return 50 + Math.random() * 80;
-        case 'pausing':
-            return 1500;
-        case 'deleting':
-            return 30 + Math.random() * 50;
-        case 'wait-delete':
-            return 500;
-        default:
-            return 100;
-    }
+    if (phase === "typing") return 50 + Math.random() * 80;
+    if (phase === "pausing") return 1500;
+    if (phase === "deleting") return 30 + Math.random() * 50;
+    if (phase === "wait-delete") return 500;
+    return 100;
 }
 
 function cycleCommands() {
-    const currentCommand = commands[currentCommandIndex];
+    var currentCommand = commands[currentCommandIndex];
 
-    if (phase === 'typing') {
+    if (phase === "typing") {
         if (charIndex < currentCommand.length) {
             terminalText.textContent = currentCommand.substring(0, charIndex + 1);
             charIndex++;
             setTimeout(cycleCommands, getCyclingDelay());
         } else {
-            phase = 'pausing';
+            phase = "pausing";
             setTimeout(cycleCommands, getCyclingDelay());
         }
-    } else if (phase === 'pausing') {
-        phase = 'wait-delete';
+    } else if (phase === "pausing") {
+        phase = "wait-delete";
         setTimeout(cycleCommands, getCyclingDelay());
-    } else if (phase === 'wait-delete') {
-        phase = 'deleting';
+    } else if (phase === "wait-delete") {
+        phase = "deleting";
         charIndex = currentCommand.length;
         setTimeout(cycleCommands, getCyclingDelay());
-    } else if (phase === 'deleting') {
+    } else if (phase === "deleting") {
         if (charIndex > 0) {
             charIndex--;
             terminalText.textContent = currentCommand.substring(0, charIndex);
@@ -830,19 +703,17 @@ function cycleCommands() {
         } else {
             currentCommandIndex = (currentCommandIndex + 1) % commands.length;
             charIndex = 0;
-            phase = 'typing';
+            phase = "typing";
             setTimeout(cycleCommands, getCyclingDelay());
         }
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
+window.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
         cycleCommands();
     }, 800);
 });
-
-/*]]>*/
 </script>
 
 </body>
