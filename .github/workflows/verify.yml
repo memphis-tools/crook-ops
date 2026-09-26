@@ -1,0 +1,26 @@
+name: verify-page
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: ./mvnw -q package
+
+      - name: Install Playwright browser
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Test page (fails on 500 or JS errors)
+        run: npx playwright test
+
+      - name: Stop job on failure (no deploy)
+        if: failure()
+        run: echo "index.html broken — deployment blocked"
