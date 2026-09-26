@@ -187,7 +187,11 @@ h1 span {
 }
 
 .terminal-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .terminal {
@@ -240,6 +244,46 @@ h1 span {
 @keyframes blink {
     0%, 49% { opacity: 1; }
     50%, 100% { opacity: 0; }
+}
+
+.suno-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid rgba(125, 249, 193, 0.35);
+    border-radius: 10px;
+    background: rgba(125, 249, 193, 0.05);
+    backdrop-filter: blur(8px);
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    text-decoration: none;
+}
+
+.suno-inline:hover {
+    background: rgba(125, 249, 193, 0.15);
+    border-color: rgba(125, 249, 193, 0.6);
+    transform: translateY(-2px);
+}
+
+.suno-inline-icon {
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.suno-inline-label {
+    color: var(--text);
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
 }
 
 .cta {
@@ -322,115 +366,9 @@ h1 span {
     color: inherit;
 }
 
-.suno-player {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 240px;
-    max-width: 300px;
-    padding: 10px 10px 10px 12px;
-    border: 1px solid rgba(125, 249, 193, 0.24);
-    border-radius: 14px;
-    background: rgba(5, 9, 16, 0.95);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.35),
-        inset 0 0 25px rgba(125, 249, 193, 0.025);
-    z-index: 100;
-    transition:
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        background 0.2s ease;
-}
-
-.suno-player:hover {
-    transform: translateY(-2px);
-    border-color: rgba(125, 249, 193, 0.5);
-    background: rgba(5, 14, 18, 0.95);
-}
-
-.suno-player-icon {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    flex: 0 0 32px;
-    border: 1px solid rgba(125, 249, 193, 0.3);
-    border-radius: 50%;
-    color: var(--accent);
-    font-size: 0.95rem;
-    box-shadow:
-        0 0 18px rgba(125, 249, 193, 0.08);
-}
-
-.suno-player-info {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    flex: 1;
-}
-
-.suno-player-label {
-    color: rgba(255, 255, 255, 0.45);
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-    font-size: 0.52rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-}
-
-.suno-player-title {
-    margin-top: 3px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: var(--text);
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-}
-
-.suno-player-button {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
-    border: 1px solid rgba(125, 249, 193, 0.35);
-    border-radius: 50%;
-    background: rgba(125, 249, 193, 0.08);
-    color: var(--accent);
-    text-decoration: none;
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.suno-player-button:hover {
-    background: rgba(125, 249, 193, 0.18);
-    transform: scale(1.06);
-    box-shadow:
-        0 0 20px rgba(125, 249, 193, 0.15);
-}
-
-.suno-player-button span {
-    margin-left: 2px;
-    font-size: 0.75rem;
+/* Hidden fixed player for mobile fallback */
+.suno-player-fixed {
+    display: none;
 }
 
 /* Tablet */
@@ -461,15 +399,22 @@ h1 span {
     .credit {
         left: 16px;
         right: 16px;
-        bottom: 70px;
+        bottom: 16px;
     }
 
-    .suno-player {
+    .suno-player-fixed {
+        display: flex;
+        position: fixed;
         right: 16px;
         bottom: 16px;
         left: 16px;
         max-width: 300px;
         margin: 0 auto;
+        z-index: 100;
+    }
+
+    .suno-inline {
+        display: none;
     }
 }
 
@@ -530,37 +475,10 @@ h1 span {
         font-size: 0.7rem;
     }
 
-    .suno-player {
-        right: 12px;
-        bottom: 12px;
-        left: 12px;
-        padding: 8px 8px 8px 10px;
-    }
-
-    .suno-player-icon {
-        width: 28px;
-        height: 28px;
-        flex: 0 0 28px;
-    }
-
-    .suno-player-button {
-        width: 32px;
-        height: 32px;
-        flex: 0 0 32px;
-    }
-
-    .suno-player-label {
-        font-size: 0.48rem;
-    }
-
-    .suno-player-title {
-        font-size: 0.62rem;
-    }
-
     .credit {
         left: 12px;
         right: 12px;
-        bottom: 60px;
+        bottom: 12px;
         font-size: 0.58rem;
     }
 }
@@ -594,11 +512,16 @@ h1 span {
                         <span id="terminal-text"></span><span class="terminal-cursor" id="cursor"></span>
                     </span>
                 </div>
-            </div>
 
-            <a class="cta" href="https://github.com/memphis-tools/crook-ops" target="_blank" rel="noopener">
-                Discover the formation →
-            </a>
+                <a href="https://suno.com/s/pVFX5KDJpfoCccuv" target="_blank" rel="noopener noreferrer" class="suno-inline" aria-label="Listen to CROOK-OPS soundtrack on Suno">
+                    <span class="suno-inline-icon">♪</span>
+                    <span class="suno-inline-label">BE A CROOK</span>
+                </a>
+
+                <a class="cta" href="https://github.com/memphis-tools/crook-ops" target="_blank" rel="noopener">
+                    Discover the formation →
+                </a>
+            </div>
 
         </div>
 
@@ -634,7 +557,7 @@ h1 span {
 </section>
 </main>
 
-<div class="suno-player">
+<div class="suno-player-fixed">
 
     <div class="suno-player-icon">
         ♪
