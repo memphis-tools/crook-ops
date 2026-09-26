@@ -2,7 +2,6 @@
 ![TOMCAT ON STANDALONE](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site1.json)
 ![TOMCAT ON CONTAINER](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site2.json)
 ![TOMCAT ON PODS](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site3.json)
-
 ![Screenshot](src/main/resources/static/img/0_3.png)
 [Image credits: midjourney](https://www.midjourney.com)
 

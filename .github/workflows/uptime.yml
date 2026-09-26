@@ -18,13 +18,14 @@ jobs:
           mkdir -p .status
           rm -f .status/*.json
           check() {
-            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$2" || echo 000)
+            code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 30 "$2" || echo 000)
+            code=${code:0:3}
             if [ "$code" = "200" ]; then msg="up"; color="brightgreen"; else msg="down ($code)"; color="red"; fi
             printf '{"schemaVersion":1,"label":"%s","message":"%s","color":"%s"}' "$1" "$msg" "$color" > ".status/$1.json"
           }
-          check standalone tomcat "https://app.crook-ops.dev/crook-ops/"
-          check tomcat container "https://app.crook-ops.dev/docker/crook-ops/"
-          check tomcat pods "https://app.crook-ops.dev/k8s/crook-ops/"
+          check "site1" "https://REAL-URL-1"
+          check "site2" "https://REAL-URL-2"
+          check "site3" "https://REAL-URL-3"
 
       - name: Commit status
         run: |
