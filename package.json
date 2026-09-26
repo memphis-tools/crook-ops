@@ -1,0 +1,31 @@
+{
+  "name": "crook-ops",
+  "version": "1.0.0",
+  "description": "![Screenshot](src/main/resources/static/img/0_3.png) [Image credits: midjourney](https://www.midjourney.com)",
+  "main": "playwright.config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/memphis-tools/crook-ops.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/memphis-tools/crook-ops/issues"
+  },
+  "homepage": "https://github.com/memphis-tools/crook-ops#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0",
+    "playwright-core": "^1.63.0"
+  }
+}
