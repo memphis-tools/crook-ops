@@ -45,9 +45,3 @@ The kubernetes cluster is only run on demand.
 ## AWS
 
 All three services are exposed through the same Application Load Balancer (ALB), with each URL routed to its corresponding backend.
-
-## Inspiration
-
-This project is inspired by the Udemy course **DevOps CI/CD Project: Jenkins, Ansible and Kubernetes** by AR Shankar (Valaxy Technologies), which demonstrates a complete CI/CD workflow using Git, Jenkins, Maven, Docker, Ansible and Kubernetes on AWS EKS.
-
-https://www.udemy.com/course/valaxy-devops/learn/lecture/29982498?start=0
