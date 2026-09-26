@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport content="width=device-width, initial-scale=1.0">
 <title>CROOK-OPS ENGINEER — crook-ops.dev</title>
 
 <style>
@@ -34,11 +34,11 @@ body {
 .hero {
     position: relative;
     width: 100%;
-    height: 100vh;
-    height: 100svh;
+    min-height: 100vh;
+    min-height: 100svh;
     display: grid;
     place-items: center;
-    overflow: hidden;
+    overflow: visible;
     isolation: isolate;
 
     background:
@@ -89,20 +89,25 @@ body {
 }
 
 .content {
+    position: relative;
+    z-index: 5;
     width: min(1120px, calc(100% - 40px));
     padding: 40px 0 85px;
 
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) 400px;
-    align-items: center;
+    align-items: flex-start;
 
     gap: clamp(36px, 7vw, 90px);
 }
 
 .copy {
     max-width: 720px;
+    position: relative;
+    z-index: 10;
 }
 
+/* Animated Eyebrow */
 .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -130,6 +135,21 @@ body {
     text-transform: uppercase;
 
     backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+
+    animation: eyebrow-light 3s ease-in-out infinite;
+}
+
+@keyframes eyebrow-light {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(125, 249, 193, 0.2);
+        border-color: rgba(125, 249, 193, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(125, 249, 193, 0.6), inset 0 0 15px rgba(125, 249, 193, 0.3);
+        border-color: rgba(125, 249, 193, 0.8);
+    }
 }
 
 .eyebrow::before {
@@ -143,6 +163,12 @@ body {
     background: var(--accent);
 
     box-shadow: 0 0 14px var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
 }
 
 h1 {
@@ -168,6 +194,7 @@ h1 span {
     line-height: 1.65;
 }
 
+/* Fixed-size Terminal with cycling text */
 .terminal {
     display: inline-block;
 
@@ -191,10 +218,32 @@ h1 span {
     line-height: 1.4;
 
     backdrop-filter: blur(8px);
+
+    min-width: 340px;
+    max-width: 420px;
+    height: 48px;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    position: relative;
 }
 
 .terminal strong {
     color: var(--accent);
+}
+
+.terminal-text-container {
+    display: inline;
+}
+
+.terminal-text {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.terminal-text.fading {
+    opacity: 0;
 }
 
 .terminal-cursor {
@@ -204,17 +253,13 @@ h1 span {
     background: var(--accent);
     margin-left: 2px;
     vertical-align: middle;
-    animation: blink 1s infinite;
+    animation: blink 0.8s step-end infinite;
+    opacity: 1;
 }
 
 @keyframes blink {
     0%, 49% { opacity: 1; }
     50%, 100% { opacity: 0; }
-}
-
-.typing-complete .terminal-cursor {
-    animation: none;
-    opacity: 0;
 }
 
 .cta {
@@ -265,6 +310,9 @@ h1 span {
         0 25px 80px rgba(0, 0, 0, 0.45);
 
     backdrop-filter: blur(14px);
+
+    position: relative;
+    z-index: 5;
 }
 
 .profile img {
@@ -308,12 +356,13 @@ h1 span {
     line-height: 1.4;
 
     text-align: center;
+
+    z-index: 10;
 }
 
 .credit a {
     color: inherit;
 }
-
 
 /* =========================================================
    SUNO PLAYER
@@ -330,6 +379,7 @@ h1 span {
     gap: 12px;
 
     min-width: 250px;
+    max-width: 320px;
 
     padding: 10px 10px 10px 12px;
 
@@ -345,7 +395,7 @@ h1 span {
         0 15px 45px rgba(0, 0, 0, 0.35),
         inset 0 0 25px rgba(125, 249, 193, 0.025);
 
-    z-index: 20;
+    z-index: 100;
 
     transition:
         border-color 0.2s ease,
@@ -464,7 +514,6 @@ h1 span {
     font-size: 0.8rem;
 }
 
-
 /* =========================================================
    RESPONSIVE
    ========================================================= */
@@ -494,9 +543,23 @@ h1 span {
         justify-self: start;
 
         width: min(400px, 100%);
+        margin-top: 30px;
+    }
+
+    .suno-player {
+        z-index: 50;
     }
 }
 
+@media (max-width: 700px) {
+    .content {
+        gap: 24px;
+    }
+
+    .profile {
+        margin-top: 20px;
+    }
+}
 
 @media (max-width: 520px) {
 
@@ -528,6 +591,7 @@ h1 span {
 
         min-width: 0;
         width: calc(100% - 28px);
+        max-width: none;
     }
 }
 
@@ -548,14 +612,20 @@ h1 span {
     }
 
     .suno-player {
-        bottom: 70px;
+        bottom: 75px;
         right: 12px;
         left: 12px;
+        width: calc(100% - 24px);
     }
 
     .credit {
-        bottom: 80px;
+        bottom: 85px;
         font-size: 0.65rem;
+    }
+
+    .terminal {
+        min-width: 280px;
+        max-width: 100%;
     }
 }
 </style>
@@ -584,7 +654,9 @@ h1 span {
 
             <div class="terminal" id="terminal">
                 <strong>&gt;</strong>
-                <span id="terminal-text"></span><span class="terminal-cursor" id="cursor"></span>
+                <span class="terminal-text-container">
+                    <span class="terminal-text" id="terminal-text"></span><span class="terminal-cursor" id="cursor"></span>
+                </span>
             </div>
 
             <a
@@ -598,14 +670,13 @@ h1 span {
 
         </div>
 
-
         <aside
             class="profile"
             aria-label="CROOK-OPS ENGINEER candidate"
         >
 
             <img
-                th:src="@{/img/0_3.png}"
+                src="/img/0_3.png"
                 alt="CROOK-OPS ENGINEER candidate"
             >
 
@@ -630,7 +701,6 @@ h1 span {
         </aside>
 
     </div>
-
 
     <!-- =====================================================
          SUNO PLAYER
@@ -666,7 +736,6 @@ h1 span {
 
     </div>
 
-
     <div class="credit">
 
         Background photography via
@@ -696,7 +765,6 @@ h1 span {
 
 </main>
 
-
 <script>
 
 // Background rotation
@@ -710,10 +778,7 @@ const backgrounds = [
 
 const hero = document.querySelector(".hero");
 
-const chosen =
-    backgrounds[
-        Math.floor(Math.random() * backgrounds.length)
-    ];
+const chosen = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
 hero.style.backgroundImage = `
     linear-gradient(
@@ -725,30 +790,81 @@ hero.style.backgroundImage = `
     url("${chosen}")
 `;
 
-// Typewriter animation for terminal
+// ===============================================
+// CYCLING TERMINAL TEXT ANIMATION
+// ===============================================
+
 const terminalText = document.getElementById('terminal-text');
 const cursor = document.getElementById('cursor');
 const terminalDiv = document.getElementById('terminal');
-const commandToType = 'init career --role="engineer"';
-let charIndex = 0;
 
-function typeCommand() {
-    if (charIndex < commandToType.length) {
-        terminalText.textContent += commandToType.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeCommand, 50 + Math.random() * 100);
-    } else {
-        terminalDiv.classList.add('typing-complete');
+const commands = [
+    'init career --role="engineer"',
+    'running career --mode="crook"'
+];
+
+let currentCommandIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let phase = 'typing'; // typing, pausing, deleting, wait-delete
+
+function getCyclingDelay() {
+    switch(phase) {
+        case 'typing':
+            return 50 + Math.random() * 80;
+        case 'pausing':
+            return 1500;
+        case 'deleting':
+            return 30 + Math.random() * 50;
+        case 'wait-delete':
+            return 500;
+        default:
+            return 100;
+    }
+}
+
+function cycleCommands() {
+    const currentCommand = commands[currentCommandIndex];
+
+    if (phase === 'typing') {
+        if (charIndex < currentCommand.length) {
+            terminalText.textContent = currentCommand.substring(0, charIndex + 1);
+            charIndex++;
+            setTimeout(cycleCommands, getCyclingDelay());
+        } else {
+            phase = 'pausing';
+            setTimeout(cycleCommands, getCyclingDelay());
+        }
+    } else if (phase === 'pausing') {
+        phase = 'wait-delete';
+        setTimeout(cycleCommands, getCyclingDelay());
+    } else if (phase === 'wait-delete') {
+        phase = 'deleting';
+        charIndex = currentCommand.length;
+        setTimeout(cycleCommands, getCyclingDelay());
+    } else if (phase === 'deleting') {
+        if (charIndex > 0) {
+            charIndex--;
+            terminalText.textContent = currentCommand.substring(0, charIndex);
+            setTimeout(cycleCommands, getCyclingDelay());
+        } else {
+            // Move to next command
+            currentCommandIndex = (currentCommandIndex + 1) % commands.length;
+            charIndex = 0;
+            phase = 'typing';
+            setTimeout(cycleCommands, getCyclingDelay());
+        }
     }
 }
 
 // Start animation when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(typeCommand, 500);
+    setTimeout(() => {
+        cycleCommands();
+    }, 800);
 });
 
 </script>
-
 
 </body>
 </html>
