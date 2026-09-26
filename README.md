@@ -1,4 +1,4 @@
-![HTML-CHECK](https://github.com/memphistools/crook-ops/actions/workflows/verify.yml/badge.svg?branch=main)
+![CI](https://github.com/memphis-tools/crook-ops/actions/workflows/verify.yml/badge.svg?branch=main)
 
 ![Screenshot](src/main/resources/static/img/0_3.png)
 [Image credits: midjourney](https://www.midjourney.com)
