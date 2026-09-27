@@ -2,16 +2,13 @@
 ![TOMCAT ON STANDALONE](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site1.json)
 ![TOMCAT ON CONTAINER](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site2.json)
 ![TOMCAT ON PODS](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/memphis-tools/crook-ops/main/.status/site3.json)
-![Screenshot](src/main/resources/static/img/0_3.png)
-[Image credits: midjourney](https://www.midjourney.com)
+![Screenshot](pictures/illustration.png)
 
 # Crook Ops
 
 A small AWS deployment project serving the same application through three different environments.
 
 **Domain:** `crook-ops.dev` (registered with [Namecheap](https://www.namecheap.com/))
-
-> 🕐 **Available daily:** 08:00–23:00 **Europe/Paris**
 
 The kubernetes cluster is only run on demand.
 
@@ -45,7 +42,3 @@ The kubernetes cluster is only run on demand.
                                              ▼
                                             Pods
 ```
-
-## AWS
-
-All three services are exposed through the same Application Load Balancer (ALB), with each URL routed to its corresponding backend.
