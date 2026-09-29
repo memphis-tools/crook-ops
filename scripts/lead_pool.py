@@ -16,5 +16,6 @@ LEADS = [
     "One curriculum, every layer. Spec-driven development, HTTP/3 and QUIC, WebGPU rendering, and AI agents wired into CI/CD\u2014plus the security awareness to spot the OWASP Top 10 creeping into your code before anyone else does.",
     "Engineers who understand both sides build the safest apps. Master new web capabilities like declarative shadow DOM and passkeys while studying how crooks weaponize weak secrets, stale dependencies, and over-permissive IAM.",
     "From markup to mega-scale. Practice with modern SSR frameworks, containerized delivery, and Kubernetes on EKS\u2014then stress-test your instincts against injection, SSRF, and supply-chain attacks in the same afternoon.",
+    "No experience, no problem. We'll teach you the tech, the psychology, the wardrobe, and the fake habits \u2014 everything to pass as an engineer. Already enrolled? We'll sharpen the act. From tourist to crook in one page.",
     "Where new web tech meets street smarts. Bento grids, WebSockets, streaming responses, and AI-powered search are the fun part; learning how crooks bypass naive rate limits and leak data through APIs is the part they don't teach.",
 ]
