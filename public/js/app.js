@@ -1,1 +1,1 @@
-console.log("Crook Ops static site loaded.");
+console.log("Crook Ops static documentation loaded.");

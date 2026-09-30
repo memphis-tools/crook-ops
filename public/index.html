@@ -1,17 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crook Ops</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crook Ops — Deployment Map</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <main>
-        <h1>Crook Ops</h1>
-        <p>Static site successfully deployed.</p>
-    </main>
 
-    <script src="js/app.js"></script>
+<header>
+  <h1>Crook Ops</h1>
+  <p>Same application — multiple deployment environments.</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>Deployment overview</h2>
+
+    <div class="map">
+      <div class="node">🌐 crook-ops.dev</div>
+      <div class="arrow">↓</div>
+      <div class="node">AWS ALB<br><small>crook-ops-alb</small></div>
+      <div class="arrow">↓</div>
+
+      <div class="branches">
+        <div class="node">
+          <strong>Tomcat</strong>
+          <small>Standalone EC2</small>
+        </div>
+
+        <div class="node">
+          <strong>Docker</strong>
+          <small>Tomcat on EC2</small>
+        </div>
+
+        <div class="node">
+          <strong>Kubernetes</strong>
+          <small>EKS → Pods</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Repository → deployment</h2>
+
+    <div class="map horizontal">
+      <div class="node">GitHub<br><small>crook-ops</small></div>
+      <div class="arrow">→</div>
+      <div class="node">Spring Boot<br><small>Application</small></div>
+      <div class="arrow">→</div>
+      <div class="node">AWS<br><small>ALB / EC2 / EKS</small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Static documentation site</h2>
+    <p>
+      This page is served independently from the Spring application.
+      DigitalOcean deploys the <code>public/</code> directory as a static site.
+    </p>
+
+    <div class="map horizontal">
+      <div class="node">GitHub</div>
+      <div class="arrow">→</div>
+      <div class="node">public/</div>
+      <div class="arrow">→</div>
+      <div class="node">DigitalOcean<br><small>Static Site</small></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Crook Ops · AWS deployment playground
+</footer>
+
+<script src="js/app.js"></script>
 </body>
 </html>
