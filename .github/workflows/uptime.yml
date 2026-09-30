@@ -26,6 +26,7 @@ jobs:
           check "site1" "https://app.crook-ops.dev/crook-ops/"
           check "site2" "https://app.crook-ops.dev/docker/crook-ops/"
           check "site3" "https://app.crook-ops.dev/k8s/crook-ops/"
+          check "site4" "https://octopus-app-a522e.ondigitalocean.app/"
 
       - name: Commit status
         run: |

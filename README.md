@@ -14,11 +14,13 @@ The kubernetes cluster is only run on demand.
 
 ## Services
 
-| Environment            | URL                                         |
-| ---------------------- | ------------------------------------------- |
-| Tomcat on EC2          | https://app.crook-ops.dev/crook-ops/        |
-| Docker / Tomcat on EC2 | https://app.crook-ops.dev/docker/crook-ops/ |
-| Kubernetes / EKS       | https://app.crook-ops.dev/k8s/crook-ops/    |
+| Environment            | URL                                              |
+| ---------------------- | ------------------------------------------------ |
+| Tomcat on EC2          | https://app.crook-ops.dev/crook-ops/             |
+| Docker / Tomcat on EC2 | https://app.crook-ops.dev/docker/crook-ops/      |
+| Kubernetes / EKS       | https://app.crook-ops.dev/k8s/crook-ops/         |
+| DigitalOcean App       | https://octopus-app-a522e.ondigitalocean.app/    |
+
 
 ## Architecture
 
