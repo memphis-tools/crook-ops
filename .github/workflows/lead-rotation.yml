@@ -96,7 +96,7 @@ jobs:
             exit 0
           fi
           STAMP="$(TZ=Europe/Paris date '+%Y-%m-%d %H:%M')"
-          git add src/main/resources/templates/index.html
+          git add src/main/resources/templates/index.html public/index.html
           git commit -m "Rotate hero lead text ($STAMP Europe/Paris)"
           git push origin "$BRANCH"
 
