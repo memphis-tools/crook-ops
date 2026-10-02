@@ -16,7 +16,10 @@ from pathlib import Path
 from lead_pool import LEADS
 
 REPO = Path(__file__).resolve().parent.parent
-DEFAULT_TARGET = REPO / "src/main/resources/templates/index.html"
+DEFAULT_TARGETS = [
+    REPO / "src/main/resources/templates/index.html",
+    REPO / "public/index.html",
+]
 PATTERN = re.compile(r'(<p class="lead">)(.*?)(</p>)', re.DOTALL)
 
 
@@ -32,29 +35,42 @@ def pick(current: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("target", nargs="?", default=str(DEFAULT_TARGET))
+    parser.add_argument(
+        "targets",
+        nargs="*",
+        default=[str(target) for target in DEFAULT_TARGETS],
+        help="index.html files to update",
+    )
     parser.add_argument("--index", type=int, help="force a specific pool entry")
     parser.add_argument("--dry-run", action="store_true", help="do not write")
     args = parser.parse_args()
 
-    path = Path(args.target)
-    text = path.read_text(encoding="utf-8")
-    match = PATTERN.search(text)
-    if not match:
-        print(f"error: <p class=\"lead\"> not found in {path}", file=sys.stderr)
-        return 1
+    paths = [Path(target) for target in args.targets]
+    texts = {}
+    current = None
+    for path in paths:
+        text = path.read_text(encoding="utf-8")
+        match = PATTERN.search(text)
+        if not match:
+            print(f"error: <p class=\"lead\"> not found in {path}", file=sys.stderr)
+            return 1
+        if current is None:
+            current = match.group(2)
+        texts[path] = (text, match)
 
-    current = match.group(2)
     lead = LEADS[args.index] if args.index is not None else pick(current)
 
     if lead == current:
         print("unchanged: selected lead already present")
         return 0
 
-    if not args.dry_run:
-        path.write_text(
-            text[: match.start(2)] + lead + text[match.end(2) :], encoding="utf-8"
-        )
+    for path, (text, match) in texts.items():
+        if match.group(2) == lead:
+            continue
+        if not args.dry_run:
+            path.write_text(
+                text[: match.start(2)] + lead + text[match.end(2) :], encoding="utf-8"
+            )
     print(f"lead replaced with: {lead[:80]}...")
     return 0
 
